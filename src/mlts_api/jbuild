@@ -1,0 +1,10 @@
+(jbuild_version 1)
+
+(ocamllex (mltsLexer))
+
+(menhir
+ ((modules (mltsParser))))
+
+(library
+  ((name Mlts_API)
+  ))
