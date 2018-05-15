@@ -1,0 +1,13 @@
+{
+  "name": "mlts-js",
+  "version": "0.1.0",
+  "main": "lib/mlts-api.js",
+  "description": "A mlts to lambda prolog transpiler in js.",
+  "repository": "git@github.com:voodoos/mlts-js.git",
+  "author": "VooDooS <thevoodoos@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "prepublish": "make lib"
+  }
+}
