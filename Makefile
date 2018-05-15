@@ -3,14 +3,12 @@ all:
 
 
 lib: all
-	cp _build/default/src/main.bc.js lib/mlts-worker.js 
-	#\
-	#&& cp src/js/elpi-api.js lib/elpi-api.js \
-	#&& sed -i bak 's/require/req2uire/' lib/elpi-worker.js
-# We need to rename require by something else in elpi-worker.js
+	cp _build/default/src/main.bc.js lib/mlts-worker.js \
+	&& cp src/js/mlts-api.js lib/mlts-api.js \
+	&& sed -i 's/require/req2uire/' lib/mlts-worker.js
+# We need to rename require by something else in mlts-worker.js
 # because it doesn't play well with Parcel.
 
-#	&& cp _build/default/src/elpiAPI.bc.js lib/elpi-api.js
 
 dev:
 	rm lib/* && @jbuilder build @install @DEFAULT --dev
