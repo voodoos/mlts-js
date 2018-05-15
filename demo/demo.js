@@ -7,18 +7,13 @@ function log(l, p, t) {
   document.getElementById("console")
     .appendChild(child)
 }
+const mlts = new Mlts(log);
 
-function answer(vals) {
-  log("answer", "", JSON.stringify(vals, null, 4));
-}
-
-const mlts = new Mlts(log, answer);
-
-mlts.start.then(val => { 
-  log("info", "MltsProm", val); 
+mlts.start.then(val => {
+  log("info", "MltsProm", val);
 });
 
-mlts.transpile("3 + 4;;").then(val =>{
+mlts.transpile("3 + 4;;").then(val => {
   log("info", "MltsProm", JSON.stringify(val, null, 4));
 }).catch(err => {
   log("error", "MltsProm", err);

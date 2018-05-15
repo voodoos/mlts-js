@@ -26,7 +26,6 @@ let onMessage e =
   let action = Js.to_string e##.type_
   and uuid = e##.uuid in
 
-  Log.info ("Test"^action);
   try 
     match action with
     | "transpile" -> 

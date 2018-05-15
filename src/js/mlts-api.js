@@ -6,7 +6,7 @@
  *
  */
 
- // Stolen somewhere...
+// Stolen somewhere...
 function generateUUID() { // Public Domain/MIT
   var d = new Date().getTime();
   if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
@@ -37,19 +37,11 @@ class Mlts {
    *       The text of the message
    *  The callback used when the Worker asks for logging
    * 
-   * @callback answerCB
-   *    @param {array(string)} args 
-   *       The args of the answer
-   *    @param {array(string)} assignements
-   *       The assignements of the args
-   *  The callback used when the Worker gives an answer
-   * 
    */
-  constructor(loggerCB, answerCB) {
+  constructor(loggerCB) {
     this.worker = null;
 
     this.logger = loggerCB;
-    this.answer = answerCB;
 
     /* We cannot send directly callbacks to the worker
      * because functions are not clonable.
@@ -68,9 +60,6 @@ class Mlts {
     this.onmessage = function (event) {
       var d = event.data;
       switch (d.type) {
-        case "answer":
-          answerCB(d.values);
-          break;
         case "log":
           loggerCB(d.lvl, d.prefix, d.text);
           break;
@@ -151,6 +140,17 @@ class Mlts {
     return this.registerPromise(uuid, message)
   }
 
+  kill() {
+    this.worker.terminate();
+    /* We need to reject all non-resolved promises */
+
+    var that = this
+    Object.keys(this.rejects).forEach(function (r) {
+      that.rejects[r](new Error("Mlts restarted or stopped."));
+    });
+    this.resolves = [];
+    this.rejects = [];
+  }
 
   /**
    * Stop and restart the Mlts Worker
@@ -161,15 +161,7 @@ class Mlts {
    * @returns {Promise}
    */
   restart() {
-    this.worker.terminate();
-    /* We need to reject all non-resolved promises */
-
-    var that = this
-    Object.keys(this.rejects).forEach(function (r) {
-      that.rejects[r](new Error("Mlts restarted"));
-    });
-    this.resolves = [];
-    this.rejects = [];
+    this.kill();
 
     return (this.start = this.startMlts());
   }
