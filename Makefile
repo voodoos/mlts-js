@@ -5,7 +5,7 @@ all:
 lib: all
 	cp _build/default/src/main.bc.js lib/mlts-worker.js \
 	&& cp src/js/mlts-api.js lib/mlts-api.js \
-	&& sed -i 's/require/req2uire/' lib/mlts-worker.js
+	&& sed -i bak 's/require/req2uire/' lib/mlts-worker.js
 # We need to rename require by something else in mlts-worker.js
 # because it doesn't play well with Parcel.
 
