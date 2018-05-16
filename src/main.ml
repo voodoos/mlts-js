@@ -29,8 +29,13 @@ let onMessage e =
   try 
     match action with
     | "transpile" -> 
-      let res, _, _, _ = Mlts_API.parse_and_translate (Js.to_string e##.code) in
-      resolve uuid (Js.string res)
+      let prog, types, typesEval, _ = Mlts_API.parse_and_translate (Js.to_string e##.code) in
+      let message = object%js (self) (* Equivalent of this *)
+        val prog = Js.string prog
+        val types = Js.string types
+        val typesEval = Js.string typesEval
+      end in
+      resolve uuid (message)
       (*Log.status "compile" Log.Finished ~details:"Files loaded"*)
     | _ -> raise Unknown_action
   
@@ -52,7 +57,7 @@ let _ =
   Sys_js.set_channel_flusher stderr (Log.error ~prefix:"stderr");
 
   Worker.set_onmessage onMessage;
-  resolve "start" (Js.string "Elpi started.")
+  resolve "start" (Js.string "Mlts worker started.")
 
                                                       
 

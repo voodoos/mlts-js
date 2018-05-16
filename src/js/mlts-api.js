@@ -122,7 +122,9 @@ class Mlts {
    * Sends some files for compilation to the Worker.
    * It returns a promise.
    * At the end of the execution the worker will resolve
-   * the promise with the list of declared types. 
+   * the promise with the resulting lprolog program object :
+   * { prog: string, types: string, typesEval: string }
+
    * Or reject it with an error message.
    * 
    * @param {array({name: string, content: string})} files
